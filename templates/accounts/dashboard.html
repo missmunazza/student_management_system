@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h2 class="fw-bold text-primary mb-3">Welcome, {{ user.name }} 👋</h2>
+                    <p class="text-muted">
+                        Logged in as <strong>{{ user.email }}</strong> 
+                        {% if user.is_admin %}
+                            <span class="badge bg-success">Admin</span>
+                        {% else %}
+                            <span class="badge bg-info">Student</span>
+                        {% endif %}
+                    </p>
+
+                    <!-- Role based content -->
+                    {% if user.is_admin %}
+                        <h4 class="text-success mt-4">Admin Panel</h4>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary">➕ Add New Student</a>
+                            <a href="#" class="btn btn-outline-secondary">📚 Manage Courses</a>
+                            <a href="#" class="btn btn-outline-dark">👥 View All Users</a>
+                        </div>
+                    {% else %}
+                        <h4 class="text-info mt-4">Student Dashboard</h4>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">📧 Email: {{ user.email }}</li>
+                            <li class="list-group-item">📌 Role: Student</li>
+
+                            <!-- ✅ Enrolled Courses -->
+                            <li class="list-group-item">
+                                📚 Enrolled Courses:
+                                <ul>
+                                    {% for enrollment in enrolled_courses %}
+                                        <li>
+                                            <a href="{% url 'courses:detail' enrollment.course.id %}">
+                                                {{ enrollment.course.title }}
+                                            </a>
+                                        </li>
+                                    {% empty %}
+                                        <li><em>No courses enrolled yet.</em></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+
+                            <!-- ✅ Favorite Courses -->
+                            <li class="list-group-item">
+                                ⭐ Favorite Courses:
+                                <ul>
+                                    {% for fav in favorite_courses %}
+                                        <li>
+                                            <a href="{% url 'courses:detail' fav.course.id %}">
+                                                {{ fav.course.title }}
+                                            </a>
+                                        </li>
+                                    {% empty %}
+                                        <li><em>No favorites added.</em></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+
+                            <!-- ✅ Available Courses -->
+                            <li class="list-group-item">
+                                📖 Available Courses:
+                                <ul>
+                                    {% for course in available_courses %}
+                                        <li>
+                                            <a href="{% url 'courses:detail' course.id %}">
+                                                {{ course.title }}
+                                            </a>
+                                            <a href="{% url 'courses:enroll' course.id %}" 
+                                               class="btn btn-sm btn-outline-success ms-2">✅ Enroll</a>
+                                            <a href="{% url 'courses:favorite' course.id %}" 
+                                               class="btn btn-sm btn-outline-warning ms-2">⭐ Favorite</a>
+                                        </li>
+                                    {% empty %}
+                                        <li><em>All courses enrolled 🎉</em></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <div class="d-grid gap-2">
+                            <a href="#" class="btn btn-outline-success">📚 My Courses</a>
+                            <a href="#" class="btn btn-outline-info">✏️ Update Profile</a>
+                        </div>
+                    {% endif %}
+
+                    <!-- Logout button -->
+                    <hr>
+                    <a href="{% url 'accounts:logout' %}" class="btn btn-danger w-100">🚪 Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

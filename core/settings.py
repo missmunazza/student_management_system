@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from django.urls import reverse_lazy   # ✅ import added
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -110,7 +111,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 
 
-# Authentication redirects
-LOGIN_REDIRECT_URL = '/'      # after login
-LOGOUT_REDIRECT_URL = '/login/'   # after logout
-LOGIN_URL = '/login/'         # if user is not logged in
+# Authentication redirects (✅ updated with namespaces)
+LOGIN_REDIRECT_URL = reverse_lazy("accounts:home")     # after login → dashboard
+LOGOUT_REDIRECT_URL = reverse_lazy("accounts:login")   # after logout → login page
+LOGIN_URL = reverse_lazy("accounts:login")             # if not logged in → login page
