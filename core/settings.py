@@ -115,3 +115,5 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = reverse_lazy("accounts:home")     # after login → dashboard
 LOGOUT_REDIRECT_URL = reverse_lazy("accounts:login")   # after logout → login page
 LOGIN_URL = reverse_lazy("accounts:login")             # if not logged in → login page
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

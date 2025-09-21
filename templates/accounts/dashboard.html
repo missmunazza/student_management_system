@@ -1,44 +1,48 @@
 {% extends "base.html" %}
 {% block title %}Dashboard{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<style>
+    .card-hover:hover {
+        transform: scale(1.02);
+        transition: 0.3s;
+    }
+    .badge-role {
+        font-size: 0.9rem;
+        padding: 0.35em 0.65em;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12">
-            <div class="card shadow-lg border-0 rounded-4">
+            <div class="card shadow-lg border-0 rounded-4 animate__animated animate__fadeIn card-hover">
                 <div class="card-body p-4">
-                    
-                    <!-- ✅ Welcome Section -->
-                    <h2 class="fw-bold text-primary mb-2">Welcome, {{ user.name }} 👋</h2>
+                    <h2 class="fw-bold text-primary mb-2">Welcome, {{ user.name }}</h2>
                     <p class="text-muted mb-4">
                         Logged in as <strong>{{ user.email }}</strong>
                         {% if user.is_admin %}
-                            <span class="badge bg-success">Admin</span>
+                            <span class="badge bg-success badge-role">Admin</span>
                         {% else %}
-                            <span class="badge bg-info">Student</span>
+                            <span class="badge bg-info badge-role">Student</span>
                         {% endif %}
                     </p>
 
-                    <!-- ====================== -->
-                    <!-- ADMIN DASHBOARD -->
-                    <!-- ====================== -->
                     {% if user.is_admin %}
-                        <h4 class="text-success mt-4">⚙️ Admin Panel</h4>
+                        <h4 class="text-success mt-4">Admin Panel</h4>
                         <div class="d-grid gap-2 mt-3">
-                            <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary">➕ Add New Student</a>
-                            <a href="#" class="btn btn-outline-secondary">📚 Manage Courses</a>
-                            <a href="#" class="btn btn-outline-dark">👥 View All Users</a>
+                            <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg">Add New Student</a>
+                            <a href="{% url 'courses:manage_courses' %}" class="btn btn-outline-secondary btn-lg">Manage Courses</a>
+                            <a href="{% url 'accounts:manage_users' %}" class="btn btn-outline-dark btn-lg">View All Users</a>
                         </div>
-
-                    <!-- ====================== -->
-                    <!-- STUDENT DASHBOARD -->
-                    <!-- ====================== -->
                     {% else %}
-                        <h4 class="text-info mt-4">🎓 Student Dashboard</h4>
+                        <h4 class="text-info mt-4">Student Dashboard</h4>
 
-                        <!-- ✅ Enrolled Courses -->
                         <div class="mt-4">
-                            <h5 class="fw-bold text-success">📚 Enrolled Courses</h5>
+                            <h5 class="fw-bold text-success">Enrolled Courses</h5>
                             <ul class="list-group">
                                 {% for enrollment in enrolled_courses %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -46,7 +50,7 @@
                                             {{ enrollment.course.title }}
                                         </a>
                                         <a href="{% url 'courses:unenroll' enrollment.course.id %}" 
-                                           class="btn btn-sm btn-outline-danger">❌ Unenroll</a>
+                                           class="btn btn-sm btn-outline-danger">Unenroll</a>
                                     </li>
                                 {% empty %}
                                     <li class="list-group-item"><em>No courses enrolled yet.</em></li>
@@ -54,9 +58,8 @@
                             </ul>
                         </div>
 
-                        <!-- ✅ Favorite Courses -->
                         <div class="mt-4">
-                            <h5 class="fw-bold text-warning">⭐ Favorite Courses</h5>
+                            <h5 class="fw-bold text-warning">Favorite Courses</h5>
                             <ul class="list-group">
                                 {% for fav in favorite_courses %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -64,7 +67,7 @@
                                             {{ fav.course.title }}
                                         </a>
                                         <a href="{% url 'courses:unfavorite' fav.course.id %}" 
-                                           class="btn btn-sm btn-outline-warning">💔 Unfavorite</a>
+                                           class="btn btn-sm btn-outline-warning">Remove Favorite</a>
                                     </li>
                                 {% empty %}
                                     <li class="list-group-item"><em>No favorites added.</em></li>
@@ -72,9 +75,8 @@
                             </ul>
                         </div>
 
-                        <!-- ✅ Available Courses -->
                         <div class="mt-4">
-                            <h5 class="fw-bold text-primary">📖 Available Courses</h5>
+                            <h5 class="fw-bold text-primary">Available Courses</h5>
                             <ul class="list-group">
                                 {% for course in available_courses %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -82,30 +84,28 @@
                                             {{ course.title }}
                                         </a>
                                         <div class="btn-group">
-                                            <a href="{% url 'courses:enroll' course.id %}" 
-                                               class="btn btn-sm btn-success">✅ Enroll</a>
-                                            <a href="{% url 'courses:favorite' course.id %}" 
-                                               class="btn btn-sm btn-warning">⭐ Favorite</a>
+                                            <a href="{% url 'courses:enroll' course.id %}" class="btn btn-sm btn-success">Enroll</a>
+                                            <a href="{% url 'courses:favorite' course.id %}" class="btn btn-sm btn-warning">Favorite</a>
                                         </div>
                                     </li>
                                 {% empty %}
-                                    <li class="list-group-item"><em>All courses enrolled 🎉</em></li>
+                                    <li class="list-group-item"><em>All courses enrolled.</em></li>
                                 {% endfor %}
                             </ul>
                         </div>
 
-                        <!-- ✅ Extra Navigation -->
                         <div class="d-grid gap-2 mt-4">
-                            <a href="{% url 'courses:list' %}" class="btn btn-outline-primary">🌍 Browse All Courses</a>
-                            <a href="{% url 'courses:my_courses' %}" class="btn btn-outline-success">📚 My Courses</a>
-                            <a href="#" class="btn btn-outline-info">✏️ Update Profile</a>
+                            <a href="{% url 'courses:list' %}" class="btn btn-outline-primary btn-lg">Browse All Courses</a>
+                            <a href="{% url 'courses:my_courses' %}" class="btn btn-outline-success btn-lg">My Courses</a>
+                            <a href="{% url 'accounts:profile' %}" class="btn btn-outline-info btn-lg">Update Profile</a>
                         </div>
                     {% endif %}
 
-                    <!-- ✅ Logout -->
                     <hr class="mt-4">
-                    <a href="{% url 'accounts:logout' %}" class="btn btn-danger w-100">🚪 Logout</a>
-
+                    <form method="post" action="{% url 'accounts:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100 btn-lg">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>

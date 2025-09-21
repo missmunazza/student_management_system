@@ -28,11 +28,9 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # accounts app routes
-    path('', include('accounts.urls')),   # all auth-related URLs
+   # accounts app routes with namespace
+    path('', include(('accounts.urls', 'accounts'), namespace='accounts')),
 
-    # courses app routes (later when ready)
-
-    # ✅ courses app (for course list, enrollments, favorites)
-    path('courses/', include('courses.urls')),  # <-- activate this once courses/urls.py exists
+    # courses app routes (activate when courses/urls.py exists)
+    path('courses/', include(('courses.urls', 'courses'), namespace='courses')),
 ]

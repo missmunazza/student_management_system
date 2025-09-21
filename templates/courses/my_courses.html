@@ -3,34 +3,20 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-body p-4">
-                    <h2 class="fw-bold text-success mb-3">📚 My Courses</h2>
-                    <p class="text-muted">Here are all the courses you’re currently enrolled in:</p>
-
-                    <ul class="list-group mb-3">
-                        {% for enrollment in enrollments %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="{% url 'courses:detail' enrollment.course.id %}">
-                                    {{ enrollment.course.title }}
-                                </a>
-                                <a href="{% url 'courses:unenroll' enrollment.course.id %}" 
-                                   class="btn btn-sm btn-outline-danger">❌ Unenroll</a>
-                            </li>
-                        {% empty %}
-                            <li class="list-group-item"><em>You are not enrolled in any courses yet.</em></li>
-                        {% endfor %}
-                    </ul>
-
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'courses:list' %}" class="btn btn-outline-primary">🌍 Browse All Courses</a>
-                        <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-secondary">⬅️ Back to Dashboard</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <h2 class="fw-bold text-success mb-3">My Courses</h2>
+    <ul class="list-group mb-3">
+        {% for enrollment in enrollments %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'courses:detail' enrollment.course.id %}">{{ enrollment.course.title }}</a>
+                <a href="{% url 'courses:unenroll' enrollment.course.id %}" class="btn btn-sm btn-outline-danger">Unenroll</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item"><em>You are not enrolled in any courses yet.</em></li>
+        {% endfor %}
+    </ul>
+    <div class="d-grid gap-2">
+        <a href="{% url 'courses:list' %}" class="btn btn-outline-primary">Browse All Courses</a>
+        <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
     </div>
 </div>
 {% endblock %}

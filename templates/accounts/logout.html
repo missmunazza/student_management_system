@@ -5,16 +5,16 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow-lg border-0 rounded-4">
+            <div class="card shadow-lg rounded-4">
                 <div class="card-body text-center p-4">
-                    <h2 class="fw-bold text-danger mb-3">🚪 Logout</h2>
+                    <h2 class="fw-bold text-danger mb-3">Logout</h2>
                     <p class="text-muted mb-4">Are you sure you want to log out?</p>
 
                     <form method="post" action="{% url 'accounts:logout' %}">
                         {% csrf_token %}
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-danger">✅ Yes, Logout</button>
-                            <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary">⬅ Cancel</a>
+                            <button type="submit" class="btn btn-danger">Yes, Logout</button>
+                            <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>
