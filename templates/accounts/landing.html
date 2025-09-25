@@ -1,35 +1,43 @@
 {% extends "base.html" %}
-{% block title %}Welcome{% endblock %}
+{% load static %}
+
+{% block title %}Homepage of Student Management System{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-body text-center p-5">
-                    <h1 class="fw-bold text-primary mb-3">Student Management System</h1>
-                    <p class="text-muted mb-4">
-                        Manage your courses, track enrollments, and favorite your preferred classes efficiently.
-                    </p>
-
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'accounts:dashboard' %}" class="btn btn-success btn-lg me-2">
-                            Go to Dashboard
-                        </a>
-                        <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger btn-lg">
-                            Logout
-                        </a>
-                    {% else %}
-                        <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-lg me-2">
-                            Login
-                        </a>
-                        <a href="{% url 'accounts:register' %}" class="btn btn-outline-secondary btn-lg">
-                            Register
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
+<div class="row align-items-center mb-5">
+  <div class="col-lg-8 mx-auto text-center">
+    {% if user.is_authenticated %}
+      {% with profile=user.studentprofile %}
+        <div class="d-flex flex-column align-items-center mb-4">
+          {% if profile and profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="Avatar" class="rounded-circle mb-3" style="width:96px; height:96px; object-fit:cover;">
+          {% else %}
+            <img src="{% static 'img/default-avatar.png' %}" alt="Avatar" class="rounded-circle mb-3" style="width:96px; height:96px; object-fit:cover;">
+          {% endif %}
+          <h2 class="h4 mb-1">
+            {% if user.name %}
+              Welcome back, {{ user.name }}
+            {% else %}
+              Welcome back, {{ user.email }}
+            {% endif %}
+          </h2>
+          <p class="text-muted">You are logged in to your account</p>
         </div>
+      {% endwith %}
+    {% else %}
+      <h1 class="display-6 fw-bold mb-3">Manage students, courses, and progress with ease</h1>
+      <p class="lead text-muted">
+        A modern student management system built with Django. Admins can manage users and courses;
+        students can update their profile and track progress.
+      </p>
+    {% endif %}
+
+    <div class="mt-4">
+      <a class="btn btn-primary me-2" href="{% url 'courses:course_list' %}">Browse courses</a>
+      {% if not user.is_authenticated %}
+        <a class="btn btn-outline-primary" href="{% url 'accounts:register' %}">Create account</a>
+      {% endif %}
     </div>
+  </div>
 </div>
 {% endblock %}

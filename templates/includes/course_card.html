@@ -1,0 +1,33 @@
+{% load static %}
+<div class="course-card shadow-sm h-100">
+  {% if course.image %}
+      <img src="{{ course.image.url }}" alt="{{ course.title }}" class="w-100" style="height:180px; object-fit:cover;">
+  {% else %}
+      <img src="{% static 'img/course-placeholder.png' %}" alt="{{ course.title }}" class="w-100" style="height:180px; object-fit:cover;">
+  {% endif %}
+
+  <div class="course-body p-3">
+      <h5 class="fw-semibold">{{ course.title }}</h5>
+      <p class="small mb-3 text-muted">
+          {{ course.description|truncatewords:20 }}
+      </p>
+
+      <div class="d-flex gap-2">
+          <a href="{% url 'courses:course_detail' course.id %}" class="btn btn-sm btn-outline-primary">
+              View
+          </a>
+
+          {% if user.is_authenticated and user.is_student %}
+              {% if course.id in favorite_ids %}
+                  <a href="{% url 'courses:toggle_favorite' course.id %}" class="btn btn-sm btn-outline-danger">
+                      Unfavorite
+                  </a>
+              {% else %}
+                  <a href="{% url 'courses:toggle_favorite' course.id %}" class="btn btn-sm btn-outline-success">
+                      Favorite
+                  </a>
+              {% endif %}
+          {% endif %}
+      </div>
+  </div>
+</div>

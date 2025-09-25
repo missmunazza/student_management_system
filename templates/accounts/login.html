@@ -1,102 +1,39 @@
 {% extends "base.html" %}
-{% load static %}
-{% load form_tags %}  {# Ensure your custom template tag exists #}
-
-{% block title %}Login{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<style>
-    /* Optional: shake animation for wrong credentials */
-    .shake {
-        animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    }
-    @keyframes shake {
-        10%, 90% { transform: translateX(-1px); }
-        20%, 80% { transform: translateX(2px); }
-        30%, 50%, 70% { transform: translateX(-4px); }
-        40%, 60% { transform: translateX(4px); }
-    }
-</style>
-{% endblock %}
+{% block title %}Login — Student Management{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow-lg rounded-4 animate__animated animate__fadeIn">
-                <div class="card-body p-4">
-                    <h2 class="text-center mb-4 fw-bold text-primary">Login</h2>
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Login</h5>
 
-                    {# Display non-field errors (like invalid credentials) #}
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger shake">
-                            {% for error in form.non_field_errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="mb-3">
+            <label for="{{ form.username.id_for_label }}" class="form-label">Email</label>
+            {{ form.username }}
+            {% for err in form.username.errors %}<div class="invalid-feedback d-block">{{ err }}</div>{% endfor %}
+          </div>
 
-                    <form method="post" novalidate>
-                        {% csrf_token %}
+          <div class="mb-3">
+            <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+            {{ form.password }}
+            {% for err in form.password.errors %}<div class="invalid-feedback d-block">{{ err }}</div>{% endfor %}
+          </div>
 
-                        {# Username / Email field #}
-                        <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label">Email Address</label>
-                            {{ form.username|add_class:"form-control" }}
-                            {% if form.username.errors %}
-                                {% for error in form.username.errors %}
-                                    <div class="text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <a class="small" href="{% url 'accounts:reset_password' %}">Forgot password?</a>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
 
-                        {# Password field with show/hide toggle #}
-                        <div class="mb-3">
-                            <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
-                            <div class="input-group">
-                                {{ form.password|add_class:"form-control" }}
-                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                                    <i class="bi bi-eye-fill"></i>
-                                </button>
-                            </div>
-                            {% if form.password.errors %}
-                                {% for error in form.password.errors %}
-                                    <div class="text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        {# Submit button #}
-                        <button type="submit" class="btn btn-primary w-100 py-2">Login</button>
-                    </form>
-
-                    {# Links for registration and password reset #}
-                    <div class="d-flex justify-content-between mt-3">
-                        <a href="{% url 'accounts:register' %}" class="text-decoration-none">Create an account</a>
-                        <a href="{% url 'accounts:reset_password' %}" class="text-decoration-none">Forgot Password?</a>
-                    </div>
-                </div>
-            </div>
+        <div class="border-top pt-3 mt-3 text-center small text-muted">
+          Don’t have an account? <a href="{% url 'accounts:register' %}">Register</a>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<!-- Bootstrap icons for eye icon -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-<script>
-    // Show/hide password toggle
-    const togglePassword = document.querySelector('#togglePassword');
-    const passwordInput = document.querySelector('#id_password');
-
-    togglePassword.addEventListener('click', function () {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.querySelector('i').classList.toggle('bi-eye-fill');
-        this.querySelector('i').classList.toggle('bi-eye-slash-fill');
-    });
-</script>
 {% endblock %}

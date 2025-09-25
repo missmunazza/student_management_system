@@ -1,22 +1,22 @@
 {% extends "base.html" %}
-{% block title %}My Courses{% endblock %}
-
 {% block content %}
-<div class="container mt-5">
-    <h2 class="fw-bold text-success mb-3">My Courses</h2>
-    <ul class="list-group mb-3">
-        {% for enrollment in enrollments %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{% url 'courses:detail' enrollment.course.id %}">{{ enrollment.course.title }}</a>
-                <a href="{% url 'courses:unenroll' enrollment.course.id %}" class="btn btn-sm btn-outline-danger">Unenroll</a>
-            </li>
-        {% empty %}
-            <li class="list-group-item"><em>You are not enrolled in any courses yet.</em></li>
-        {% endfor %}
-    </ul>
-    <div class="d-grid gap-2">
-        <a href="{% url 'courses:list' %}" class="btn btn-outline-primary">Browse All Courses</a>
-        <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
-    </div>
+<div class="container my-4">
+  <h2 class="mb-4">My Enrolled Courses</h2>
+  <div class="row">
+    {% for e in my_courses %}
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+          <img src="{% static 'img/course-placeholder.png' %}" class="card-img-top" alt="Course image">
+          <div class="card-body">
+            <h5 class="card-title">{{ e.course.title }}</h5>
+            <p class="card-text">{{ e.course.description|truncatewords:20 }}</p>
+            <p><strong>Grade:</strong> {{ e.grade|default:"N/A" }}</p>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>You are not enrolled in any courses.</p>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

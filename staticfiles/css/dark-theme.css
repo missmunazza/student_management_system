@@ -1,0 +1,10 @@
+body.dark {
+    background: #1a1a1a;
+    color: #eee;
+  }
+  
+  body.dark .card {
+    background: #2a2a2a;
+    color: #eee;
+  }
+  

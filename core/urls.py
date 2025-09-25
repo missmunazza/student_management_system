@@ -24,13 +24,19 @@
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-   # accounts app routes with namespace
+    # accounts app routes with namespace
     path('', include(('accounts.urls', 'accounts'), namespace='accounts')),
 
-    # courses app routes (activate when courses/urls.py exists)
+    # courses app routes
     path('courses/', include(('courses.urls', 'courses'), namespace='courses')),
 ]
+
+# Serve media files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

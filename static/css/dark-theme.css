@@ -1,0 +1,65 @@
+/* Dark Mode Overrides */
+body.dark {
+    background: #121212;
+    color: #e0e0e0;
+  }
+  
+  body.dark .navbar {
+    background: #333;
+    color: #fff;
+  }
+  
+  body.dark .navbar .nav-links a,
+  body.dark .btn-outline {
+    border-color: #ccc;
+    color: #ccc;
+  }
+  
+  body.dark .nav-links a:hover,
+  body.dark .btn-outline:hover {
+    background: #ccc;
+    color: #121212;
+  }
+  
+  body.dark .course-card {
+    background: #1e1e1e;
+    box-shadow: 0 2px 8px rgba(255,255,255,0.05);
+  }
+  
+  body.dark .course-body h2 {
+    color: #fff;
+  }
+  
+  body.dark .course-body p {
+    color: #ccc;
+  }
+  
+  body.dark .btn {
+    background: #4a90e2;
+    color: #fff;
+  }
+  
+  body.dark .btn:hover {
+    background: #357ab8;
+  }
+  
+  body.dark .btn-outline {
+    border-color: #4a90e2;
+    color: #4a90e2;
+  }
+  
+  body.dark .btn-outline:hover {
+    background: #4a90e2;
+    color: #fff;
+  }
+  
+  body.dark .footer {
+    background: #1a1a1a;
+    color: #aaa;
+  }
+  
+  body.dark .alert-success { background: #1e3a1f; color: #78d98a; }
+  body.dark .alert-info    { background: #1a2b3c; color: #82b8ff; }
+  body.dark .alert-warning { background: #3c2f1a; color: #ffd666; }
+  body.dark .alert-error   { background: #3c1a1a; color: #ff7a7a; }
+  
